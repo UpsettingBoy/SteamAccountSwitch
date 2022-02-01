@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace SteamAccountSwitch.Pages
 {
-    public class CustomDataObject
+    public class SteamProfile
     {
         public string AccountName { get; set; }
         public BitmapImage Image { get; set; }
 
-        public CustomDataObject()
+        public SteamProfile()
         {
         }
     }

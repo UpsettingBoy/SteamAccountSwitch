@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -29,49 +30,62 @@ namespace SteamAccountSwitch.Pages
     /// </summary>
     public sealed partial class SteamAccountsPage : Page
     {
-        public ObservableCollection<CustomDataObject> Accounts { get; set; }
+        public ObservableCollection<SteamProfile> Accounts { get; set; }
+
+        private bool _loaded = false;
 
         public SteamAccountsPage()
         {
             this.InitializeComponent();
-            Accounts = new ObservableCollection<CustomDataObject>();
+
+            NavigationCacheMode = NavigationCacheMode.Required;
+            Accounts = new ObservableCollection<SteamProfile>();
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            while (Cache.GetSetting<string>("steam_installation") == null)
+            while (string.IsNullOrWhiteSpace(Cache.GetSetting<string>("steam_installation")) || !Cache.GetSetting<string>("steam_installation").Contains("steam.exe"))
             {
                 var dialog = new ContentDialog
                 {
                     Title = "Steam installation selector",
-                    PrimaryButtonText = "Use this installation",
+                    PrimaryButtonText = "Use selected installation",
                     DefaultButton = ContentDialogButton.Primary,
                     Content = new SteamSettingsDialog(),
                     XamlRoot = Content.XamlRoot
                 };
 
-                await dialog.ShowAsync();
+                if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+                {
+                    var steamSettings = dialog.Content as SteamSettingsDialog;
+                    Cache.AddSetting("steam_installation", steamSettings.SteamInstallPath);
+                }
             }
 
-            var steamIds = Utils.Steam.GetAccountsIds();
-            foreach (var (id, name) in steamIds)
+            if (!_loaded)
             {
-                var avatar = await Utils.Steam.GetAccountAvatar(id, true);
-                Accounts.Add(new CustomDataObject
+                var steamIds = Utils.Steam.GetAccountsIds();
+                foreach (var (id, name) in steamIds)
                 {
-                    AccountName = name,
-                    Image = avatar
-                });
+                    var avatar = await Utils.Steam.GetAccountAvatar(id, true);
+                    Accounts.Add(new SteamProfile
+                    {
+                        AccountName = name,
+                        Image = avatar
+                    });
+                }
+
+                _loaded = true;
             }
         }
 
         private async void AccountsGrid_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var handle = new Vanara.PInvoke.HWND(App.WindowHandle);
-            Vanara.PInvoke.User32.ShowWindow(handle, Vanara.PInvoke.ShowWindowCommand.SW_MINIMIZE);
+            var clicked = (SteamProfile)e.ClickedItem;
+            var launchTask = Utils.Steam.LaunchSteam(clicked.AccountName);
 
-            var clicked = (CustomDataObject)e.ClickedItem;
-            await Utils.Steam.LaunchSteam(clicked.AccountName);
+            App.Minimize();
+            await launchTask;
         }
     }
 }

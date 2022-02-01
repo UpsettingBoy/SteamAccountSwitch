@@ -6,6 +6,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 
+using SteamAccountSwitch.Utils;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +30,50 @@ namespace SteamAccountSwitch.Pages
         public SettingsPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Required;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SteamPath.Text = Cache.GetSetting<string>("steam_installation");
+        }
+
+        private void SteamPath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SteamPath.Text == Cache.GetSetting<string>("steam_installation"))
+            {
+                SteamSaveBt.IsEnabled = false;
+            }
+            else
+            {
+                SteamSaveBt.IsEnabled = true;
+            }
+        }
+
+        private async void SteamBrowseBt_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Steam installation selector",
+                PrimaryButtonText = "Use selected installation",
+                CloseButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Primary,
+                Content = new SteamSettingsDialog(),
+                XamlRoot = Content.XamlRoot
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                var steamSettings = dialog.Content as SteamSettingsDialog;
+                var steamInstallation = steamSettings.SteamInstallPath;
+
+                SteamPath.Text = steamInstallation;
+            }
+        }
+
+        private void SteamSaveBt_Click(object sender, RoutedEventArgs e)
+        {
+            Cache.AddSetting("steam_installation", SteamPath.Text);
         }
     }
 }

@@ -9,7 +9,7 @@
 
     <NavigationView x:Name="NavMenu" PaneDisplayMode="Top" SelectionFollowsFocus="Enabled" IsBackButtonVisible="Collapsed" ItemInvoked="NavMenu_ItemInvoked" Loaded="NavMenu_Loaded">
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Account" Content="Steam Accounts" Tag="steam_accounts" />
+            <NavigationViewItem Icon="Account" Content="Accounts" Tag="steam_accounts" />
         </NavigationView.MenuItems>
         <Frame x:Name="NavMenuContent"/>
     </NavigationView>

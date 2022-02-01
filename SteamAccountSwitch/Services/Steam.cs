@@ -59,15 +59,6 @@ namespace SteamAccountSwitch.Utils
                 CreateNoWindow = true,
             });
 
-            //var process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-            //{
-            //    FileName = "ping.exe",
-            //    Arguments = @"www.google.es -n 50",
-            //    UseShellExecute = false,
-            //    RedirectStandardOutput = true,
-            //    CreateNoWindow = true
-            //});
-
             process.OutputDataReceived += (_, args) =>
             {
                 var item = args.Data;

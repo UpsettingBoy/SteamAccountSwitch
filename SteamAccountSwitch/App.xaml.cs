@@ -62,5 +62,11 @@ namespace SteamAccountSwitch
         }
 
         private Window m_window;
+
+        public static void Minimize()
+        {
+            var handle = new Vanara.PInvoke.HWND(WindowHandle);
+            Vanara.PInvoke.User32.ShowWindow(handle, Vanara.PInvoke.ShowWindowCommand.SW_MINIMIZE);
+        }
     }
 }

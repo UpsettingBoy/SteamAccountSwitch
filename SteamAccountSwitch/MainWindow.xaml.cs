@@ -69,7 +69,7 @@ namespace SteamAccountSwitch
             
             var preNavPageType = NavMenuContent.CurrentSourcePageType;
 
-            
+
             if (page is not null && !Type.Equals(preNavPageType, page))
             {
                 NavMenuContent.Navigate(page, null, transitionInfo);

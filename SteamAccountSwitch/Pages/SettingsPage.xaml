@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    >
+    Loaded="Page_Loaded">
 
     <Grid ColumnSpacing="25" RowSpacing="25" Margin="25,25,25,25">
         <Grid.ColumnDefinitions>
@@ -15,13 +15,20 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Steam Installation Path"/>
-                <TextBox/>
-                <Button Content="Browse"/>
-                <Button Content="Save"/>
-            </StackPanel>
+        <StackPanel Spacing="5" Grid.Column="0">
+            <TextBlock Text="Steam Installation Path"/>
+            <Grid ColumnSpacing="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SteamPath" Grid.Column="0" TextChanged="SteamPath_TextChanged"/>
+                <Button x:Name="SteamBrowseBt" Content="Browse" Grid.Column="1" Click="SteamBrowseBt_Click"/>
+                <Button x:Name="SteamSaveBt" Content="Save" Grid.Column="2" IsEnabled="False" Click="SteamSaveBt_Click"/>
+            </Grid>
         </StackPanel>
+        <!--<StackPanel Grid.Column="1"></StackPanel>-->
     </Grid>
 </Page>

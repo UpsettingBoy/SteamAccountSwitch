@@ -30,6 +30,8 @@ namespace SteamAccountSwitch.Pages
     /// </summary>
     public sealed partial class SteamSettingsDialog : Page
     {
+        public string SteamInstallPath { get; private set; }
+
         public SteamSettingsDialog()
         {
             this.InitializeComponent();
@@ -45,7 +47,7 @@ namespace SteamAccountSwitch.Pages
         {
             if (e.AddedItems.Count > 0)
             {
-                Cache.AddSetting("steam_installation", e.AddedItems.First());
+                SteamInstallPath = (string)e.AddedItems.First();
             }
         }
 
@@ -60,7 +62,7 @@ namespace SteamAccountSwitch.Pages
             if (file != null)
             {
                 InstallationBox.Text = file.Path;
-                Cache.AddSetting("steam_installation", file.Path);
+                SteamInstallPath = file.Path;
             }
         }
     }
