@@ -32,6 +32,7 @@ namespace SteamAccountSwitch.Pages
     {
         public ObservableCollection<SteamProfile> Accounts { get; private set; }
 
+        private double _prevWidth;
         private bool _firstTime = true;
 
         public SteamAccountsPage()
@@ -78,6 +79,7 @@ namespace SteamAccountSwitch.Pages
                     });
                 }
 
+                _prevWidth = this.ActualWidth;
                 _firstTime = false;
             }
         }
@@ -93,16 +95,21 @@ namespace SteamAccountSwitch.Pages
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var count = Accounts.Count;
-            for (int i = 0; i < count; i++)
+            if (this.ActualWidth != _prevWidth)
             {
-                var card = Accounts[i];
-                Accounts.RemoveAt(i);
+                var count = Accounts.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    var card = Accounts[i];
+                    Accounts.RemoveAt(i);
 
-                card.Width = (this.ActualWidth - 160) / count;
+                    card.Width = (this.ActualWidth - 160) / count;
 
-                Accounts.Insert(i, card);
+                    Accounts.Insert(i, card);
+                }
             }
+
+            _prevWidth = this.ActualWidth;
         }
     }
 }
