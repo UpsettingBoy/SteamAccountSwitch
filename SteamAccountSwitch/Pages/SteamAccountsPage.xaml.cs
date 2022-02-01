@@ -30,9 +30,9 @@ namespace SteamAccountSwitch.Pages
     /// </summary>
     public sealed partial class SteamAccountsPage : Page
     {
-        public ObservableCollection<SteamProfile> Accounts { get; set; }
+        public ObservableCollection<SteamProfile> Accounts { get; private set; }
 
-        private bool _loaded = false;
+        private bool _firstTime = true;
 
         public SteamAccountsPage()
         {
@@ -44,6 +44,8 @@ namespace SteamAccountSwitch.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            
+            
             while (string.IsNullOrWhiteSpace(Cache.GetSetting<string>("steam_installation")) || !Cache.GetSetting<string>("steam_installation").Contains("steam.exe"))
             {
                 var dialog = new ContentDialog
@@ -62,7 +64,7 @@ namespace SteamAccountSwitch.Pages
                 }
             }
 
-            if (!_loaded)
+            if (_firstTime)
             {
                 var steamIds = Utils.Steam.GetAccountsIds();
                 foreach (var (id, name) in steamIds)
@@ -71,11 +73,12 @@ namespace SteamAccountSwitch.Pages
                     Accounts.Add(new SteamProfile
                     {
                         AccountName = name,
-                        Image = avatar
+                        Image = avatar,
+                        Width = (this.ActualWidth - 160) / steamIds.Count
                     });
                 }
 
-                _loaded = true;
+                _firstTime = false;
             }
         }
 
@@ -86,6 +89,20 @@ namespace SteamAccountSwitch.Pages
 
             App.Minimize();
             await launchTask;
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var count = Accounts.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var card = Accounts[i];
+                Accounts.RemoveAt(i);
+
+                card.Width = (this.ActualWidth - 160) / count;
+
+                Accounts.Insert(i, card);
+            }
         }
     }
 }

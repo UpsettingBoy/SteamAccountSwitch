@@ -13,6 +13,8 @@ namespace SteamAccountSwitch.Pages
         public string AccountName { get; set; }
         public BitmapImage Image { get; set; }
 
+        public double Width { get; set; }
+
         public SteamProfile()
         {
         }

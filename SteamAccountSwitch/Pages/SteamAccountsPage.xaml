@@ -7,17 +7,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded">
+    Loaded="Page_Loaded"
+    SizeChanged="Page_SizeChanged">
 
-    <StackPanel Margin="10,10,10,10">
-        <GridView x:Name="AccountsGrid" ItemsSource="{x:Bind Accounts}" ItemClick="AccountsGrid_ItemClick" IsItemClickEnabled="True" SelectionMode="Single">
+    <Grid>
+        <GridView x:Name="AccountsGrid" ItemsSource="{x:Bind Accounts}" ItemClick="AccountsGrid_ItemClick" IsItemClickEnabled="True" SelectionMode="Single"
+                  HorizontalAlignment="Center" VerticalAlignment="Center">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="250">
+                    <Grid Margin="20" Width="{Binding Width, Mode=OneWay}">
                         <Image Source="{Binding Image}" Stretch="Fill"/>
-                        <StackPanel Orientation="Vertical" Height="40" VerticalAlignment="Bottom" Padding="5,1,5,1" Background="LightGray" Opacity=".75">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding AccountName}" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                        <StackPanel Orientation="Vertical" Height="40" VerticalAlignment="Bottom" Padding="5,1,5,1" Background="LightGray" Opacity=".60">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding AccountName, Mode=OneWay}" Padding="0,7,0,0" Style="{ThemeResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -32,11 +34,9 @@
 
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                           MaximumRowsOrColumns="3"
-                           Orientation="Horizontal"/>
+                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"  MaximumRowsOrColumns="4" Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </GridView.ItemsPanel>
         </GridView>
-    </StackPanel>
+    </Grid>
 </Page>
