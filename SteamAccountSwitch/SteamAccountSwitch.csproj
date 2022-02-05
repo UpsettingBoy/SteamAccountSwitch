@@ -11,6 +11,11 @@
     <PackageLicenseFile>D:\Projects\SteamAccountSwitch\LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <UserSecretsId>6734aace-6e29-4068-98b2-1bc0c9ee6025</UserSecretsId>
+    <Authors>Jerónimo Sánchez</Authors>
+    <Description>App to easily change among Steam accounts</Description>
+    <PackageProjectUrl>https://github.com/UpsettingBoy/SteamAccountSwitch</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/UpsettingBoy/SteamAccountSwitch</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Pages\SettingsPage.xaml" />
@@ -27,6 +32,13 @@
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.15" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
