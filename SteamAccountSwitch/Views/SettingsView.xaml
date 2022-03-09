@@ -1,0 +1,83 @@
+﻿<Page
+    x:Class="SteamAccountSwitch.Views.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SteamAccountSwitch.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:SettingsUI.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+
+    <ScrollViewer>
+        <StackPanel Margin="20">
+            <!--Personalization config-->
+            <controls:SettingsGroup Header="Personalisation">
+                <InfoBar IsOpen="True" IsClosable="False" Severity="Warning" 
+                         Title="Experimental"
+                         Message="Personalisation options are under development. They may not work at all!"/>
+                <controls:SettingExpander IsExpanded="True">
+                    <controls:SettingExpander.Header>
+                        <controls:Setting Header="Personalisation options"
+                                      Description="Change colour mode and transparency effects"
+                                      Icon="&#xe790;"/>
+                    </controls:SettingExpander.Header>
+                    <controls:SettingExpander.Content>
+                        <StackPanel>
+                            <controls:Setting Header="Transparency effects" IsEnabled="False"
+                                          Description="Surfaces appear translucent"
+                                          Style="{StaticResource ExpanderContentSettingStyle}">
+                                <ToggleSwitch Margin="0,0,-80,0"/>
+                            </controls:Setting>
+                            <controls:Setting Header="Colour mode"
+                                          Description="Change the application colour mode"
+                                          Style="{StaticResource ExpanderContentSettingStyle}">
+                                <ComboBox x:Name="ThemeSelectorCb" SelectionChanged="ThemeSelectorCb_SelectionChanged" MinWidth="200">
+                                    <x:String>Light</x:String>
+                                    <x:String>Dark</x:String>
+                                    <!--TODO: Enable someday-->
+                                    <!--<x:String>Follow system theme</x:String>-->
+                                </ComboBox>
+                            </controls:Setting>
+                        </StackPanel>
+                    </controls:SettingExpander.Content>
+                </controls:SettingExpander>
+            </controls:SettingsGroup>
+            <!--Steam config-->
+            <controls:SettingsGroup Header="Steam">
+                <controls:SettingExpander IsExpanded="True">
+                    <controls:SettingExpander.Header>
+                        <controls:Setting Header="Steam options"
+                                      Description="Settings related to how Steam is handled"
+                                      Icon="&#xe7fc;"
+                                      Style="{StaticResource ExpanderContentSettingStyle}">
+                        </controls:Setting>
+                    </controls:SettingExpander.Header>
+                    <controls:SettingExpander.Content>
+                        <StackPanel>
+                            <controls:Setting Header="Auto-launch"
+                                          Description="Controls whether Steam is launched at account selection"
+                                          Style="{StaticResource ExpanderContentSettingStyle}">
+                                <ToggleSwitch Margin="0,0,-80,0" IsOn="{x:Bind ViewModel.Settings.SteamAutoLaunch, Mode=TwoWay}"/>
+                            </controls:Setting>
+                            <controls:Setting Header="Launcher path"
+                                          Description="Location of Steam launcher executable (steam.exe, ...)"
+                                          Style="{StaticResource ExpanderContentSettingStyle}">
+                                <controls:Setting.Content>
+                                    <StackPanel Spacing="15" Orientation="Horizontal">
+                                        <TextBox x:Name="SteamExePathTb" Text="{x:Bind ViewModel.Settings.SteamExePath, Mode=TwoWay}" 
+                                                 TextChanged="SteamExePathTb_TextChanged" Grid.Column="0" MinWidth="400"/>
+                                        <Button x:Name="SteamExePathBrowseBt" Content="Browse" 
+                                                IsEnabled="{x:Bind ViewModel.SteamExeBrowseEnabled, Mode=OneWay}" 
+                                                Click="SteamExePathBrowseBt_Click" Grid.Column="1"/>
+                                    </StackPanel>
+                                </controls:Setting.Content>
+                            </controls:Setting>
+                        </StackPanel>
+                    </controls:SettingExpander.Content>
+                </controls:SettingExpander>
+            </controls:SettingsGroup>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

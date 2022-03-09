@@ -8,8 +8,10 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="ms-appx:///SettingsUI/Themes/SettingsUI.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <x:String x:Key="SteamIconGeometry">M31.945 0A32.028 32.028 0 0 0 0 29.433l17.181 7.091a9.021 9.021 0 0 1 5.106-1.574q.256 0 .505.014l7.642-11.057v-.155a12.088 12.088 0 1 1 12.088 12.07h-.275l-10.9 7.76c.007.144.012.288.012.429a9.075 9.075 0 0 1-17.97 1.786L1.1 40.72A32.047 32.047 0 1 0 31.945 0z</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
