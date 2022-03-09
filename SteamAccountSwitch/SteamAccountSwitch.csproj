@@ -11,6 +11,13 @@
     <Nullable>enable</Nullable>
     <SupportedOSPlatformVersion>10.0.18362.0</SupportedOSPlatformVersion>
     <UserSecretsId>e2e7cdd5-e361-40a6-8697-55987a32033e</UserSecretsId>
+    <Authors>Jeronimo Sanchez &lt;UpsettingBoy&gt;</Authors>
+    <Company />
+    <Description>Switch among Steam accounts easily</Description>
+    <PackageProjectUrl>https://github.com/UpsettingBoy/SteamAccountSwitch</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>https://github.com/UpsettingBoy/SteamAccountSwitch</RepositoryType>
+    <PackageLicenseFile>D:\Projects\SteamAccountSwitch\LICENSE</PackageLicenseFile>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Views\SettingsView.xaml" />
@@ -28,6 +35,13 @@
     <PackageReference Include="SteamWebAPI2" Version="4.3.2" />
     <PackageReference Include="WinUIEx" Version="1.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
