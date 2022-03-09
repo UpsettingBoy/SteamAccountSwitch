@@ -62,10 +62,10 @@ namespace SteamAccountSwitch.Services.Windows
                 return new List<SteamAccountModel>();
             }
 
-            var accountsFile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(steamPath)!, "config", "loginusers.vdf");
+            var accountsFile = Path.Combine(Path.GetDirectoryName(steamPath)!, "config", "loginusers.vdf");
 
             var accounts = new List<SteamAccountModel>();
-            dynamic accountsParsed = VdfConvert.Deserialize(System.IO.File.ReadAllText(accountsFile));
+            dynamic accountsParsed = VdfConvert.Deserialize(File.ReadAllText(accountsFile));
 
             foreach (var acc in accountsParsed.Value)
             {
@@ -106,11 +106,8 @@ namespace SteamAccountSwitch.Services.Windows
             });
 
             await process!.WaitForExitAsync();
-            
-            var waitTask = Task.Delay(3000); // Still needs some extra time to launch properly every time.
-            
+                        
             await SetLaunchMode(acc.SteamId, offline);
-            await waitTask;
 
             process = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {

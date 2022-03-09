@@ -56,11 +56,12 @@
                     </controls:SettingExpander.Header>
                     <controls:SettingExpander.Content>
                         <StackPanel>
-                            <controls:Setting Header="Auto-launch"
+                            <!--TODO: WFT did I create this config???-->
+                            <!--<controls:Setting Header="Auto-launch"
                                           Description="Controls whether Steam is launched at account selection"
                                           Style="{StaticResource ExpanderContentSettingStyle}">
                                 <ToggleSwitch Margin="0,0,-80,0" IsOn="{x:Bind ViewModel.Settings.SteamAutoLaunch, Mode=TwoWay}"/>
-                            </controls:Setting>
+                            </controls:Setting>-->
                             <controls:Setting Header="Launcher path"
                                           Description="Location of Steam launcher executable (steam.exe, ...)"
                                           Style="{StaticResource ExpanderContentSettingStyle}">

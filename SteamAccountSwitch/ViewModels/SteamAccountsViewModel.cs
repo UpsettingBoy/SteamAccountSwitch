@@ -39,7 +39,8 @@ namespace SteamAccountSwitch.ViewModels
 
             foreach (var acc in accounts)
             {
-                var validBitmap = SoftwareBitmap.Convert(acc.Avatar, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
+                //var validBitmap = SoftwareBitmap.Convert(acc.Avatar, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
+                var validBitmap = SoftwareBitmap.Convert(acc.Avatar, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore);
 
                 var image = new SoftwareBitmapSource();
                 await image.SetBitmapAsync(validBitmap);
@@ -56,6 +57,7 @@ namespace SteamAccountSwitch.ViewModels
         {
             acc.Launching = true;
             await _steam.LaunchSteamAsync(acc, offline);
+            //await Task.Delay(10000);
             acc.Launching = false;
         }
 

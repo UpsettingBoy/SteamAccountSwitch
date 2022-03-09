@@ -74,6 +74,8 @@ namespace SteamAccountSwitch.Views
         {
             var account = e.ClickedItem as SteamAccountModel;
             await ViewModel.LaunchSteamAsync(account!, false);
+
+            AccountsGrid.SelectedItem = null;
         }
 
         private void SettingsHyperlink_Click(Microsoft.UI.Xaml.Documents.Hyperlink sender, Microsoft.UI.Xaml.Documents.HyperlinkClickEventArgs args)

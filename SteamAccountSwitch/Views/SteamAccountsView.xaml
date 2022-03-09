@@ -10,8 +10,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
     
-    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Button x:Name="ClearCacheBt" Click="ClearCacheBt_Click" Margin="-40,-40,-23,0" HorizontalAlignment="Right" 
+    <Grid>
+        <Button x:Name="ClearCacheBt" Click="ClearCacheBt_Click" Margin="25" HorizontalAlignment="Right" 
                 VerticalAlignment="Top" IsEnabled="False" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <FontIcon Glyph="&#xe72c;" FontSize="15"/>
@@ -32,34 +32,33 @@
         
         <GridView x:Name="AccountsGrid" ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}"
                   ItemClick="AccountsGrid_ItemClick" IsItemClickEnabled="True" SelectionMode="Single"
-                  HorizontalAlignment="Center" VerticalAlignment="Center">
+                  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,40,0,0">
 
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:SteamAccountModel">
-                    <Grid>
-                        <Grid Margin="20" Width="{x:Bind AvatarWidth}"
-                          RightTapped="Grid_RightTapped">
-
+                    <Grid Margin="5" BorderBrush="{ThemeResource AppBarBorderThemeBrush}" BorderThickness="1">
+                        <Grid Width="{x:Bind AvatarWidth, Mode=OneWay}" RightTapped="Grid_RightTapped">
                             <Image Source="{x:Bind AvatarSource, Mode=OneWay}" Stretch="Fill"/>
                             <StackPanel Orientation="Vertical" Height="40" VerticalAlignment="Bottom" Padding="5,1,5,1" 
-                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Opacity=".65">
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Opacity=".65"
+                                    BorderBrush="{ThemeResource AppBarBorderThemeBrush}" BorderThickness="0,1,0,0">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <FontIcon Glyph="&#xe783;" Margin="0,7,0,0" 
                                           Visibility="{x:Bind vm:SteamAccountsViewModel.PasswordToVisibility(SavedPassword), Mode=OneWay}" 
                                           Foreground="Yellow"/>
-                                    <TextBlock Text="{x:Bind AccountName}" Padding="10,7,0,0"/>
+                                    <TextBlock Text="{x:Bind AccountName, Mode=OneWay}" Padding="10,7,0,0" Foreground="{ThemeResource AppBarItemForegroundThemeBrush}"/>
                                 </StackPanel>
                             </StackPanel>
                             <FlyoutBase.AttachedFlyout>
                                 <MenuFlyout>
                                     <MenuFlyoutItem Text="Launch" Click="MenuFlyoutItem_Click_Steam" 
-                                                Tag="{x:Bind vm:SteamAccountsViewModel.CreateFlyoutTag(SteamId, x:False)}">
+                                                Tag="{x:Bind vm:SteamAccountsViewModel.CreateFlyoutTag(SteamId, x:False), Mode=OneWay}">
                                         <MenuFlyoutItem.Icon>
                                             <FontIcon Glyph="&#xe768;"/>
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutItem Text="Launch offline" Click="MenuFlyoutItem_Click_Steam"
-                                                Tag="{x:Bind vm:SteamAccountsViewModel.CreateFlyoutTag(SteamId, x:True)}">
+                                                Tag="{x:Bind vm:SteamAccountsViewModel.CreateFlyoutTag(SteamId, x:True), Mode=OneWay}">
                                         <MenuFlyoutItem.Icon>
                                             <FontIcon Glyph="&#xf384;"/>
                                         </MenuFlyoutItem.Icon>
@@ -73,13 +72,16 @@
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            
+
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="5, 5, 5, 5"/>
+                    <Setter Property="Margin" Value="15,0,15,15"/>
+                    <Setter Property="CornerRadius" Value="25"/>
+                    <Setter Property="BorderBrush" Value="{ThemeResource AppBarBorderThemeBrush}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
                 </Style>
             </GridView.ItemContainerStyle>
-
+            
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ItemsWrapGrid x:Name="MaxItemsWrapGrid"  MaximumRowsOrColumns="3" Orientation="Horizontal" HorizontalAlignment="Center"/>
