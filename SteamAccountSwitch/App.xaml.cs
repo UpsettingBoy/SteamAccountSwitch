@@ -1,11 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 
 using SteamAccountSwitch.Interfaces;
+using SteamAccountSwitch.Messages;
 using SteamAccountSwitch.Services.Windows;
 
 using System;
+
+using Windows.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -17,7 +22,7 @@ namespace SteamAccountSwitch
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, IRecipient<UpdateAppThemeMessage>
     {
         public IServiceProvider Container { get; private set; }
         public Window Window { get; private set; }
@@ -33,6 +38,7 @@ namespace SteamAccountSwitch
             SetAppTheme((ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme"));
 
             this.InitializeComponent();
+            WeakReferenceMessenger.Default.Register(this);
         }
 
         /// <summary>
@@ -45,10 +51,7 @@ namespace SteamAccountSwitch
             Window = new MainWindow();
             Window.Activate();
 
-            if (Window.Content is FrameworkElement fe)
-            {
-                fe.RequestedTheme = (ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme");
-            }
+            WeakReferenceMessenger.Default.Send(new UpdateAppThemeMessage((ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme")));
         }
 
         private void SetAppTheme(ElementTheme elementTheme)
@@ -75,7 +78,6 @@ namespace SteamAccountSwitch
         {            
             var services = new ServiceCollection();
             
-            // Services
             services.AddSingleton<IConfiguration>(provider => new ConfigurationBuilder()
                                                                 .AddUserSecrets<App>().Build());
             services.AddSingleton<IConfig, WindowsConfigService>();
@@ -83,6 +85,45 @@ namespace SteamAccountSwitch
             services.AddSingleton<ISteam, WindowsSteamService>();
 
             return services.BuildServiceProvider();
+        }
+
+        public void Receive(UpdateAppThemeMessage message)
+        {
+            var lightGray = new Color() { A = 255, R = 240, G = 240, B = 240 };
+            
+            // App theme change
+            // TODO: I hate this code bit, ugly
+            Color titleColor;
+            switch (message.Value)
+            {
+                case ElementTheme.Light:
+                    titleColor = lightGray;
+                    break;
+                case ElementTheme.Dark:
+                    titleColor = Colors.Black;
+                    break;
+                case ElementTheme.Default:
+                default:
+                    switch (RequestedTheme)
+                    {
+                        case ApplicationTheme.Light:
+                            titleColor = lightGray;
+                            break;
+                        case ApplicationTheme.Dark:
+                            titleColor = Colors.Black;
+                            break;
+                        default:
+                            titleColor = lightGray;
+                            break;
+                    }
+                    break;
+            }
+
+            if (Window.Content is FrameworkElement fe)
+            {
+                fe.RequestedTheme = message.Value;
+                WinUIEx.WindowExtensions.SetTitleBarBackgroundColors(Window, titleColor);
+            }
         }
     }
 }

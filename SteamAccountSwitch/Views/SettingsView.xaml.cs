@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -7,6 +8,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 
+using SteamAccountSwitch.Messages;
 using SteamAccountSwitch.ViewModels;
 
 using System;
@@ -88,12 +90,7 @@ namespace SteamAccountSwitch.Views
 
         private void ThemeSelectorCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var window = ((App)Application.Current).Window;
-
-            if (window.Content is FrameworkElement fe)
-            {
-                fe.RequestedTheme = ViewModel.Settings.AppTheme;
-            }
+            WeakReferenceMessenger.Default.Send(new UpdateAppThemeMessage(ViewModel.Settings.AppTheme));
 
             ViewModel.Settings.Save();
         }
