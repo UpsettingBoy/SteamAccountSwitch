@@ -134,9 +134,9 @@ namespace SteamAccountSwitch.Services.Windows
             await File.WriteAllTextAsync(accountsFile, VdfConvert.Serialize(accountsParsed));
         }
 
-        public async Task<SoftwareBitmap?> GetAccountAvatarAsync(string steamId, bool forceDownload)
+        private async Task<SoftwareBitmap?> GetAccountAvatarAsync(string steamId, bool forceDownload)
         {
-            var storageKey = steamId + ".jpeg";
+            var storageKey = steamId + ".png";
             var avatarBitmap = await _mediaStorage.LoadBitmapAsync(storageKey);
 
             if (forceDownload || avatarBitmap is null)
@@ -151,11 +151,13 @@ namespace SteamAccountSwitch.Services.Windows
                 {
                     return null;
                 }
-                
-                using var randomStream = avatarBuffer.AsStream().AsRandomAccessStream();
-                var decoder = await BitmapDecoder.CreateAsync(randomStream);
 
-                avatarBitmap = await decoder.GetSoftwareBitmapAsync();
+                using (var randomStream = avatarBuffer.AsStream().AsRandomAccessStream())
+                {
+                    var decoder = await BitmapDecoder.CreateAsync(randomStream);
+                    avatarBitmap = await decoder.GetSoftwareBitmapAsync();
+                }
+                                
                 await _mediaStorage.StoreBitmapAsync(storageKey, avatarBitmap);
             }
 

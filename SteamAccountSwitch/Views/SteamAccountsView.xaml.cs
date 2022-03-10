@@ -57,6 +57,8 @@ namespace SteamAccountSwitch.Views
 
         private async Task UpdateViewModelAndPage(bool forceDownload)
         {
+            LoadingRing.IsActive = true;
+
             await ViewModel.LoadSteamAccounts(this.ActualWidth, forceDownload);
 
             LoadingRing.IsActive = false;

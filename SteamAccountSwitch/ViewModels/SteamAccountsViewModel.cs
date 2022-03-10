@@ -17,7 +17,7 @@ using Windows.Graphics.Imaging;
 
 namespace SteamAccountSwitch.ViewModels
 {
-    public partial class SteamAccountsViewModel: ObservableObject
+    public partial class SteamAccountsViewModel : ObservableObject
     {
         private ISteam _steam;
 
@@ -37,9 +37,11 @@ namespace SteamAccountSwitch.ViewModels
             Accounts.Clear();
             var accounts = (await _steam.GetSteamAccountsAsync(forceDownload)).OrderBy(acc => acc.SteamId).ToList();
 
+            var imageDims = (panelWidth - 160) / Math.Clamp(accounts.Count, 1.0, 3.0);
+
+
             foreach (var acc in accounts)
             {
-                //var validBitmap = SoftwareBitmap.Convert(acc.Avatar, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
                 var validBitmap = SoftwareBitmap.Convert(acc.Avatar, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore);
 
                 var image = new SoftwareBitmapSource();
@@ -57,7 +59,6 @@ namespace SteamAccountSwitch.ViewModels
         {
             acc.Launching = true;
             await _steam.LaunchSteamAsync(acc, offline);
-            //await Task.Delay(10000);
             acc.Launching = false;
         }
 
@@ -74,7 +75,7 @@ namespace SteamAccountSwitch.ViewModels
 
     public class MenuFlyoutItemTag
     {
-        public string SteamId{ get; set; }
+        public string SteamId { get; set; }
         public bool Offline { get; set; }
     }
 }

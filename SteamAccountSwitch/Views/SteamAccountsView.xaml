@@ -12,7 +12,7 @@
     
     <Grid>
         <Button x:Name="ClearCacheBt" Click="ClearCacheBt_Click" Margin="25" HorizontalAlignment="Right" 
-                VerticalAlignment="Top" IsEnabled="False" Visibility="Collapsed">
+                VerticalAlignment="Top" IsEnabled="True" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <FontIcon Glyph="&#xe72c;" FontSize="15"/>
                 <TextBlock Text="Update cache"/>

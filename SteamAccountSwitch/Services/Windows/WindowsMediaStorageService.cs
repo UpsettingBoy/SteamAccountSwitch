@@ -1,10 +1,8 @@
-﻿using SteamAccountSwitch.Interfaces;
+﻿
+using SteamAccountSwitch.Interfaces;
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Windows.Graphics.Imaging;
@@ -14,11 +12,11 @@ namespace SteamAccountSwitch.Services.Windows
 {
     public class WindowsMediaStorageService : IMediaStorage
     {
-        private StorageFolder storageFolder;
+        private StorageFolder _storageFolder;
 
         public WindowsMediaStorageService()
         {
-            storageFolder = ApplicationData.Current.TemporaryFolder;
+            _storageFolder = ApplicationData.Current.TemporaryFolder;
         }
 
         public async Task<SoftwareBitmap?> LoadBitmapAsync(string key)
@@ -26,7 +24,7 @@ namespace SteamAccountSwitch.Services.Windows
             StorageFile file;
             try
             {
-                file = await storageFolder.GetFileAsync(key);
+                file = await _storageFolder.GetFileAsync(key);
             }
             catch (FileNotFoundException)
             {
@@ -34,17 +32,23 @@ namespace SteamAccountSwitch.Services.Windows
             }
 
             using var stream = await file.OpenAsync(FileAccessMode.Read);
+            if (stream.Size == 0)
+            {
+                return null;
+            }
+            
             var decoder = await BitmapDecoder.CreateAsync(stream);
+            var tmp = await decoder.GetSoftwareBitmapAsync();
 
-            return await decoder.GetSoftwareBitmapAsync();
+            return tmp;
         }
 
         public async Task StoreBitmapAsync(string key, SoftwareBitmap bitmap)
         {
-            var file = await storageFolder.CreateFileAsync(key, CreationCollisionOption.ReplaceExisting);
+            var file = await _storageFolder.CreateFileAsync(key, CreationCollisionOption.OpenIfExists);
 
             using var stream = await file.OpenAsync(FileAccessMode.ReadWrite);
-            var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+            var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
 
             encoder.SetSoftwareBitmap(bitmap);
 
