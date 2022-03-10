@@ -21,7 +21,8 @@
 
         <ProgressRing x:Name="LoadingRing" IsIndeterminate="True" Width="50" Height="50"/>
 
-        <RichTextBlock x:Name="InformationText" Visibility="Collapsed" TextAlignment="Center" FontSize="16">
+        <RichTextBlock x:Name="InformationText" Visibility="Collapsed" TextAlignment="Center" FontSize="16"
+                       HorizontalAlignment="Center" VerticalAlignment="Center">
             <Paragraph>No Steam accounts detected. Make sure Steam is properly installed.</Paragraph>
             <Paragraph>
                 Then, go to 
