@@ -11,7 +11,7 @@
 
     <NavigationView x:Name="NavigationView" ItemInvoked="NavigationView_ItemInvoked"
                     PaneDisplayMode="LeftCompact" IsBackButtonVisible="Collapsed" SelectionFollowsFocus="Enabled"
-                    SelectedItem="SteamAccountsItem">
+                    SelectedItem="SteamAccountsItem" Background="{ThemeResource AppBarBackgroundThemeBrush}">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="Contact" Content="Accounts" x:Name="SteamAccountsItem"/>
         </NavigationView.MenuItems>

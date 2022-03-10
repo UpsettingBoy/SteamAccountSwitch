@@ -3,9 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 
 using SteamAccountSwitch.Interfaces;
-using SteamAccountSwitch.Models;
 using SteamAccountSwitch.Services.Windows;
-using SteamAccountSwitch.ViewModels;
 
 using System;
 
@@ -22,7 +20,6 @@ namespace SteamAccountSwitch
     public partial class App : Application
     {
         public IServiceProvider Container { get; private set; }
-
         public Window Window { get; private set; }
         
 
@@ -32,8 +29,10 @@ namespace SteamAccountSwitch
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
             Container = ConfigureServices();
+            SetAppTheme((ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme"));
+
+            this.InitializeComponent();
         }
 
         /// <summary>
@@ -45,6 +44,31 @@ namespace SteamAccountSwitch
         {
             Window = new MainWindow();
             Window.Activate();
+
+            if (Window.Content is FrameworkElement fe)
+            {
+                fe.RequestedTheme = (ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme");
+            }
+        }
+
+        private void SetAppTheme(ElementTheme elementTheme)
+        {
+            ApplicationTheme requestedTheme;
+            switch (elementTheme)
+            {
+                case ElementTheme.Light:
+                    requestedTheme = ApplicationTheme.Light;
+                    break;
+                case ElementTheme.Dark:
+                    requestedTheme = ApplicationTheme.Dark;
+                    break;
+                case ElementTheme.Default:
+                default:
+                    requestedTheme = RequestedTheme;
+                    break;
+            }
+
+            RequestedTheme = requestedTheme;
         }
 
         private static IServiceProvider ConfigureServices()

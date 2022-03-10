@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 using Windows.Storage;
 
@@ -18,10 +19,20 @@ namespace SteamAccountSwitch.Services.Windows
             settingsContainer = ApplicationData.Current.LocalSettings;
         }
 
-        public T GetConfig<T>(string key)
+        public T? GetConfig<T>(string key)
         {
             var value = settingsContainer.Values[key];
             return (T)value;
+        }
+
+        public T? InitConfig<T>(string key, object? value)
+        {
+            if (!settingsContainer.Values.ContainsKey(key))
+            {
+                settingsContainer.Values[key] = value;
+            }
+            
+            return GetConfig<T>(key);
         }
 
         public void SetConfig(string key, object? value)

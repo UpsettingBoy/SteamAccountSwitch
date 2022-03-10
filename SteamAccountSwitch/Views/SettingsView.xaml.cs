@@ -32,13 +32,6 @@ namespace SteamAccountSwitch.Views
     {
         public SettingsViewModel ViewModel { get; set; }
 
-        private Dictionary<string, ElementTheme> themeTranslator = new()
-        {
-            { "Dark", ElementTheme.Dark },
-            { "Light", ElementTheme.Light },
-            { "Follow system theme", ElementTheme.Default },
-        };
-
         public SettingsView()
         {
             this.InitializeComponent();
@@ -95,17 +88,14 @@ namespace SteamAccountSwitch.Views
 
         private void ThemeSelectorCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var requestedTheme = themeTranslator.FirstOrDefault(x => x.Key == e.AddedItems.First() as string).Value;
+            var window = ((App)Application.Current).Window;
 
-            // For some reason this cannot be done
-            //var windowHandle = WinUIEx.HwndExtensions.GetActiveWindow();
-            //var window = Window.FromAbi(windowHandle);
-            var window = ((App)Application.Current).Window; // TODO: Change eventually
-
-            if (window is not null && window.Content is FrameworkElement fe)
+            if (window.Content is FrameworkElement fe)
             {
-                fe.RequestedTheme = requestedTheme;
+                fe.RequestedTheme = ViewModel.Settings.AppTheme;
             }
+
+            ViewModel.Settings.Save();
         }
     }
 }
