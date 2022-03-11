@@ -13,7 +13,11 @@
                     PaneDisplayMode="LeftCompact" IsBackButtonVisible="Collapsed" SelectionFollowsFocus="Enabled"
                     SelectedItem="SteamAccountsItem" Background="{ThemeResource AppBarBackgroundThemeBrush}">
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Contact" Content="Accounts" x:Name="SteamAccountsItem"/>
+            <NavigationViewItem Content="Accounts" x:Name="SteamAccountsItem">
+                <NavigationViewItem.Icon>
+                    <PathIcon Data="{StaticResource SteamIconGeometry}"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </NavigationView.MenuItems>
         <Frame x:Name="PageFrame"/>
     </NavigationView>

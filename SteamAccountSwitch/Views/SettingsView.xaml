@@ -36,7 +36,7 @@
                                 <ToggleSwitch Margin="0,0,-80,0"/>
                             </controls:Setting>
                             <controls:Setting Header="Colour mode"
-                                          Description="Change the application colour mode. Restart the app to fully apply."
+                                          Description="Change the application colour mode. Restart the app to fully apply"
                                           Style="{StaticResource ExpanderContentSettingStyle}">
                                 <ComboBox x:Name="ThemeSelectorCb" ItemsSource="{x:Bind vm:SettingsViewModel.AppThemeTranslator.Values}"
                                           SelectedItem="{x:Bind ViewModel.Settings.AppTheme, Converter={StaticResource ThemeConverter}, Mode=TwoWay}"
@@ -53,8 +53,10 @@
                     <controls:SettingExpander.Header>
                         <controls:Setting Header="Steam options"
                                       Description="Settings related to how Steam is handled"
-                                      Icon="&#xe7fc;"
                                       Style="{StaticResource ExpanderContentSettingStyle}">
+                            <controls:Setting.Icon>
+                                <PathIcon Data="{StaticResource SteamIconGeometry}"/>
+                            </controls:Setting.Icon>
                         </controls:Setting>
                     </controls:SettingExpander.Header>
                     <controls:SettingExpander.Content>
@@ -66,7 +68,7 @@
                                 <ToggleSwitch Margin="0,0,-80,0" IsOn="{x:Bind ViewModel.Settings.SteamAutoLaunch, Mode=TwoWay}"/>
                             </controls:Setting>-->
                             <controls:Setting Header="Launcher path"
-                                          Description="Location of Steam launcher executable (steam.exe, ...)"
+                                          Description="Location of Steam launcher executable (steam.exe)"
                                           Style="{StaticResource ExpanderContentSettingStyle}">
                                 <controls:Setting.Content>
                                     <StackPanel Spacing="15" Orientation="Horizontal">
@@ -81,6 +83,15 @@
                         </StackPanel>
                     </controls:SettingExpander.Content>
                 </controls:SettingExpander>
+            </controls:SettingsGroup>
+            <!--Related information-->
+            <controls:SettingsGroup Header="Related information">
+                <RichTextBlock>
+                    <Paragraph>
+                        <!--TODO: Make attribution to the different used projects & logos/trademarks used (Steam, etc)-->
+                        <Hyperlink UnderlineStyle="None">Third party</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
             </controls:SettingsGroup>
         </StackPanel>
     </ScrollViewer>

@@ -26,7 +26,7 @@ namespace SteamAccountSwitch.ViewModels
         {
             { ElementTheme.Dark, "Dark" },
             { ElementTheme.Light, "Light" },
-            { ElementTheme.Default, "Follow system theme" },
+            { ElementTheme.Default, "Windows default" },
         };
 
         public SettingsViewModel()
