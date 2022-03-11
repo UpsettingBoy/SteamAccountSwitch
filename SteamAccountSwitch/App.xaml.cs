@@ -35,7 +35,7 @@ namespace SteamAccountSwitch
         public App()
         {
             Container = ConfigureServices();
-            SetAppTheme((ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme"));
+            SetElementsTheme();
 
             this.InitializeComponent();
             WeakReferenceMessenger.Default.Register(this);
@@ -51,26 +51,20 @@ namespace SteamAccountSwitch
             Window = new MainWindow();
             Window.Activate();
 
+            WinUIEx.WindowExtensions.CenterOnScreen(Window);
+
             WeakReferenceMessenger.Default.Send(new UpdateAppThemeMessage((ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme")));
         }
 
-        private void SetAppTheme(ElementTheme elementTheme)
+        private void SetElementsTheme()
         {
-            ApplicationTheme requestedTheme;
-            switch (elementTheme)
+            var elementTheme = (ElementTheme)Container.GetService<IConfig>().GetConfig<byte>("AppTheme");
+            var requestedTheme = elementTheme switch
             {
-                case ElementTheme.Light:
-                    requestedTheme = ApplicationTheme.Light;
-                    break;
-                case ElementTheme.Dark:
-                    requestedTheme = ApplicationTheme.Dark;
-                    break;
-                case ElementTheme.Default:
-                default:
-                    requestedTheme = RequestedTheme;
-                    break;
-            }
-
+                ElementTheme.Light => ApplicationTheme.Light,
+                ElementTheme.Dark => ApplicationTheme.Dark,
+                _ => RequestedTheme,
+            };
             RequestedTheme = requestedTheme;
         }
 
@@ -90,35 +84,18 @@ namespace SteamAccountSwitch
         public void Receive(UpdateAppThemeMessage message)
         {
             var lightGray = new Color() { A = 255, R = 240, G = 240, B = 240 };
-            
-            // App theme change
-            // TODO: I hate this code bit, ugly
-            Color titleColor;
-            switch (message.Value)
+            var titleColor = message.Value switch
             {
-                case ElementTheme.Light:
-                    titleColor = lightGray;
-                    break;
-                case ElementTheme.Dark:
-                    titleColor = Colors.Black;
-                    break;
-                case ElementTheme.Default:
-                default:
-                    switch (RequestedTheme)
-                    {
-                        case ApplicationTheme.Light:
-                            titleColor = lightGray;
-                            break;
-                        case ApplicationTheme.Dark:
-                            titleColor = Colors.Black;
-                            break;
-                        default:
-                            titleColor = lightGray;
-                            break;
-                    }
-                    break;
-            }
-
+                ElementTheme.Light => lightGray,
+                ElementTheme.Dark => Colors.Black,
+                _ => RequestedTheme switch
+                {
+                    ApplicationTheme.Light => lightGray,
+                    ApplicationTheme.Dark => Colors.Black,
+                    _ => lightGray,
+                },
+            };
+            
             if (Window.Content is FrameworkElement fe)
             {
                 fe.RequestedTheme = message.Value;

@@ -44,12 +44,6 @@ namespace SteamAccountSwitch.Views
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ViewModel.SteamExeBrowseEnabled = string.IsNullOrWhiteSpace(ViewModel.Settings?.SteamExePath);
-
-            // TODO: Only half icon displaying
-            //var steamGeometry = SettingsUI.Helpers.GeneralHelper.GetGeometry("SteamIconGeometry");
-            //var steamIcon = new PathIcon { Data = steamGeometry, Scale = new Vector3(0.25f) };
-
-            //SteamSettings.Icon = steamIcon;
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -73,10 +67,8 @@ namespace SteamAccountSwitch.Views
 
         private async void SteamExePathBrowseBt_Click(object sender, RoutedEventArgs e)
         {
-            var filePicker = new FileOpenPicker();
-
-            var windowHandle = WinUIEx.HwndExtensions.GetActiveWindow();
-            WinRT.Interop.InitializeWithWindow.Initialize(filePicker, windowHandle);
+            var window = ((App)Application.Current).Window;
+            var filePicker = WinUIEx.WindowExtensions.CreateOpenFilePicker(window);
 
             filePicker.CommitButtonText = "Select";
             filePicker.FileTypeFilter.Add(".exe");

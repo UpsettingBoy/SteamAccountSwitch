@@ -31,7 +31,9 @@ namespace SteamAccountSwitch
     /// </summary>
     public sealed partial class MainWindow : WinUIEx.WindowEx, IRecipient<GoToSettingsMessage>
     {
-        private readonly Dictionary<string, Type> viewTranslator = new()
+        private string? _prevPage = null;
+        
+        private readonly Dictionary<string, Type> _viewTranslator = new()
         {
             { "Accounts", typeof(SteamAccountsView) },
             { "Settings", typeof(SettingsView)}
@@ -57,7 +59,12 @@ namespace SteamAccountSwitch
         }
 
         private void Navigate(string pageName, NavigationTransitionInfo? transitionInfo = null)
-        {
+        {            
+            if (_prevPage is not null && _prevPage.Equals(pageName))
+            {
+                return;
+            }
+            
             var isSettings = pageName.Equals("Settings");
             
             if (isSettings)
@@ -83,7 +90,7 @@ namespace SteamAccountSwitch
                 NavigationView.SelectedItem = item;
             }
 
-            var pageType = viewTranslator.FirstOrDefault(x => x.Key == pageName).Value;
+            var pageType = _viewTranslator.FirstOrDefault(x => x.Key == pageName).Value;
             var navOptions = new FrameNavigationOptions
             {
                 TransitionInfoOverride = transitionInfo?? new SlideNavigationTransitionInfo()
@@ -91,7 +98,8 @@ namespace SteamAccountSwitch
                     Effect = SlideNavigationTransitionEffect.FromBottom
                 }
             };
-                        
+
+            _prevPage = pageName;
             PageFrame.NavigateToType(pageType, null, navOptions);
         }
     }
