@@ -1,8 +1,6 @@
 ﻿using Gameloop.Vdf;
-using Gameloop.Vdf.Linq;
 
 using Microsoft.Extensions.Configuration;
-//using Microsoft.UI.Xaml.Media.Imaging;
 
 using SteamAccountSwitch.Interfaces;
 using SteamAccountSwitch.Models;

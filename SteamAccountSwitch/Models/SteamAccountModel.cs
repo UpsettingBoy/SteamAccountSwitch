@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 
 using Windows.Graphics.Imaging;
 
+#nullable disable
 namespace SteamAccountSwitch.Models
 {
     public partial class SteamAccountModel: ObservableObject

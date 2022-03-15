@@ -1,5 +1,4 @@
-﻿
-using SteamAccountSwitch.Interfaces;
+﻿using SteamAccountSwitch.Interfaces;
 
 using System;
 using System.IO;

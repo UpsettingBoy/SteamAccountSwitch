@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using System.Linq;
 
 using Windows.Storage;
 

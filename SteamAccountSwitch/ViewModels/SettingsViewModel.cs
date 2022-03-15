@@ -2,7 +2,6 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 using SteamAccountSwitch.Interfaces;
 using SteamAccountSwitch.Models;
@@ -10,8 +9,6 @@ using SteamAccountSwitch.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SteamAccountSwitch.ViewModels
 {

@@ -3,12 +3,6 @@ using Microsoft.UI.Xaml;
 
 using SteamAccountSwitch.Interfaces;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace SteamAccountSwitch.Models
 {
     public partial class SettingsModel: ObservableObject
