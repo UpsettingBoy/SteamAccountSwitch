@@ -89,7 +89,7 @@
                 <RichTextBlock>
                     <Paragraph>
                         <!--TODO: Make attribution to the different used projects & logos/trademarks used (Steam, etc)-->
-                        <Hyperlink UnderlineStyle="None">Third party</Hyperlink>
+                        <Hyperlink x:Name="ThirdPartyLink" UnderlineStyle="None" Click="ThirdPartyLink_Click">Third party</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
             </controls:SettingsGroup>

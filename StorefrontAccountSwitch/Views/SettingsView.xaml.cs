@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -6,6 +6,8 @@ using StorefrontAccountSwitch.Messages;
 using StorefrontAccountSwitch.ViewModels;
 
 using System;
+
+using Windows.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -70,6 +72,21 @@ namespace StorefrontAccountSwitch.Views
             WeakReferenceMessenger.Default.Send(new UpdateAppThemeMessage(ViewModel.Settings.AppTheme));
 
             ViewModel.Settings.Save();
+        }
+
+        private async void ThirdPartyLink_Click(Microsoft.UI.Xaml.Documents.Hyperlink sender, Microsoft.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            var dialogContent = new ThirdPartyView();
+            var dialog = new ContentDialog() 
+            { 
+                Title = "Third party notices",
+                CloseButtonText = "Close",
+                DefaultButton = ContentDialogButton.Close,
+                Content = dialogContent,
+                XamlRoot = XamlRoot
+            };
+
+            await dialog.ShowAsync();
         }
     }
 }
